@@ -1,23 +1,69 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Card from './Components/Card';
+import Header from './Components/Header';
+import Main from './Components/Main';
+
+import Info from './Components/Info';
+
 
 function App() {
+
+  const [addButton, setAddButton] = useState (new Set([]));
+
+  useEffect(() => {
+    const item = localStorage.getItem('cards');
+    
+    if (item !== null ){
+      setAddButton(new Set(JSON.parse(item)))
+
+      
+
+    }
+  }, []);
+
+ 
+  
+  const addNewValueRandom = () => {
+       let randomNumber = Math.random() * 100000 | 0;
+       let oldAddButton = [...addButton];
+        addButton.add(randomNumber);
+        if(addButton.size === oldAddButton.length){
+          addNewValueRandom()
+        }
+
+  }
+
+  const closeCardApp = (number) => {
+   
+    let storageCloseCardApp = new Set([...addButton].filter((val) => val !== number));
+    localStorage.setItem('cards', JSON.stringify([...storageCloseCardApp]));
+     setAddButton(storageCloseCardApp);
+     
+  }
+
+  const addButtonApp = () => {
+    addNewValueRandom()
+    localStorage.setItem('cards', JSON.stringify([...addButton]));
+        setAddButton(new Set([...addButton]));
+    
+  }
+
+  const sortCard = () => {
+    
+    let storageSortCard  = new Set ([...addButton].sort());
+    localStorage.setItem('cards', JSON.stringify([...storageSortCard]));
+    setAddButton(new Set ([...addButton].sort()))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header onSort={sortCard}  onAdd = {addButtonApp} />
+      <Info />
+      <Main addNewButton = {addButton} onDelete = {closeCardApp} />
+    
+   
+     
     </div>
   );
 }
