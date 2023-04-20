@@ -4,7 +4,7 @@ import Card from './Components/Card';
 import Header from './Components/Header';
 import Main from './Components/Main';
 
-import Info from './Components/Info';
+
 
 
 function App() {
@@ -59,7 +59,7 @@ function App() {
   return (
     <div className="App">
       <Header onSort={sortCard}  onAdd = {addButtonApp} />
-      <Info />
+   
       <Main addNewButton = {addButton} onDelete = {closeCardApp} />
     
    
